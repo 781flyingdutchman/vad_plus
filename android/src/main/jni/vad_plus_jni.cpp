@@ -890,8 +890,9 @@ extern "C"
             return -1;
         }
 
-        jmethodID processMethod = env->GetMethodID(handleClass, "processAudioData", "([F)V");
-        if (processMethod == nullptr || env->ExceptionCheck())
+        jmethodID inputArrayMethod = env->GetMethodID(handleClass, "inputArray", "(I)[F");
+        jmethodID processMethod = env->GetMethodID(handleClass, "processAudioData", "([FI)V");
+        if (inputArrayMethod == nullptr || processMethod == nullptr || env->ExceptionCheck())
         {
             clearException(env);
             env->DeleteLocalRef(handleObj);
@@ -899,7 +900,9 @@ extern "C"
             return -1;
         }
 
-        jfloatArray floatArray = env->NewFloatArray(sample_count);
+        // Reuse the handle's input array instead of allocating one per call
+        jfloatArray floatArray = static_cast<jfloatArray>(
+            env->CallObjectMethod(handleObj, inputArrayMethod, sample_count));
         if (floatArray == nullptr || env->ExceptionCheck())
         {
             clearException(env);
@@ -910,7 +913,7 @@ extern "C"
 
         env->SetFloatArrayRegion(floatArray, 0, sample_count, samples);
 
-        env->CallVoidMethod(handleObj, processMethod, floatArray);
+        env->CallVoidMethod(handleObj, processMethod, floatArray, sample_count);
         clearException(env);
 
         env->DeleteLocalRef(floatArray);

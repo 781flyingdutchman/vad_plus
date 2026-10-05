@@ -1,3 +1,7 @@
+## Unreleased
+
+- Android: stop churning the Java heap while processing audio (~2.2 MB of garbage per second of audio, causing a young GC every few seconds). Samples are buffered in primitive arrays instead of boxed `MutableList<Float>`, inference reuses direct-buffer tensors and pinned outputs instead of creating them per frame, and the JNI bridge reuses its input array. Output is unchanged.
+
 ## 0.3.1
 
 - Re-publish of 0.3.0 (no functional changes).
