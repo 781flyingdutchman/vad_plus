@@ -1,3 +1,7 @@
+## Unreleased
+
+- iOS and macOS: support Swift Package Manager (closes #1). The Swift sources and model moved to `ios/vad_plus/` and `macos/vad_plus/` (the layout Flutter expects); CocoaPods keeps working from the same files. Under SPM, ONNX Runtime comes from `onnxruntime-swift-package-manager` 1.20.x (1.18's macOS framework cannot be embedded) and the plugin is a dynamic library so its FFI symbols stay visible to `DynamicLibrary.process()`. The empty `Classes/vad_plus.c` shims (everything in `src/vad_plus.c` is compiled out on Apple platforms) were removed.
+
 ## 0.3.1
 
 - Re-publish of 0.3.0 (no functional changes).

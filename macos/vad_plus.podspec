@@ -15,10 +15,10 @@ Provides real-time speech detection with configurable thresholds and callbacks.
   s.author           = { 'Your Company' => 'email@example.com' }
 
   s.source           = { :path => '.' }
-  s.source_files     = 'Classes/**/*'
+  s.source_files     = 'vad_plus/Sources/vad_plus/**/*.swift'
 
   # Include the ONNX model file as a resource bundle
-  s.resource_bundles = { 'vad_plus_assets' => ['Resources/*.onnx'] }
+  s.resource_bundles = { 'vad_plus_assets' => ['vad_plus/Sources/vad_plus/Resources/*.onnx'] }
 
   s.dependency 'FlutterMacOS'
   s.dependency 'onnxruntime-objc', '~> 1.18.0'

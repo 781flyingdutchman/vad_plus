@@ -1,6 +1,12 @@
 import Foundation
 import AVFoundation
+// The ONNX Runtime Objective-C API is the onnxruntime-objc pod under
+// CocoaPods and the OnnxRuntimeBindings module under Swift Package Manager.
+#if canImport(onnxruntime_objc)
 import onnxruntime_objc
+#else
+import OnnxRuntimeBindings
+#endif
 
 // MARK: - VAD Configuration (matching C struct)
 
@@ -246,6 +252,18 @@ class VADHandleInternal {
     
     private func findBundledModel() -> String? {
         let modelNames = ["silero_vad_v6", "silero_vad"]
+        
+        #if SWIFT_PACKAGE
+        // Swift Package Manager resource bundle
+        for name in modelNames {
+            if let path = Bundle.module.path(forResource: name, ofType: "onnx") {
+                if config.isDebug {
+                    print("VadPlus: Found model in package bundle: \(path)")
+                }
+                return path
+            }
+        }
+        #endif
         
         // Try main bundle
         for name in modelNames {
