@@ -1,3 +1,7 @@
+## Unreleased
+
+- Android: support Android Gradle Plugin 9. AGP 9 compiles Kotlin itself (`android.builtInKotlin`) and fails when a library applies `kotlin-android`, so the plugin (and `kotlinOptions`) is now only applied on AGP < 9.
+
 ## 0.3.1
 
 - Re-publish of 0.3.0 (no functional changes).
